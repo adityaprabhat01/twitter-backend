@@ -1,10 +1,5 @@
-const express = require("express");
 const mysql = require('mysql');
-const routes = require('./routes')
 require('dotenv').config();
-
-const app = express()
-app.use(express.json());
 
 var db;
 function connectDatabase() {
@@ -12,7 +7,8 @@ function connectDatabase() {
     host     : process.env.DB_HOST,
     user     : process.env.DB_USER,
     password : process.env.DB_PASSWORD,
-    port     : process.env.DB_PORT
+    port     : process.env.DB_PORT,
+    database : process.env.DB_DATABASE
   });
 
   db.connect(function(err) {
@@ -21,13 +17,9 @@ function connectDatabase() {
       return;
     }
     console.log('Connected to database.');
-    app.listen(process.env.SERVER_PORT);
-    console.log("Server running on port", process.env.SERVER_PORT);
   });
   
   return db;
 }
 
-app.use('', routes);
-app.listen(process.env.SERVER_PORT);
-console.log("Server running on port", process.env.SERVER_PORT);
+module.exports = connectDatabase();
