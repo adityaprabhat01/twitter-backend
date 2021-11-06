@@ -3,6 +3,7 @@ var mysql = require('mysql');
 var db = require('../database')
 var moment = require('moment');
 
+// post
 const postTweet = (req, res) => {
   let data = {
     tweet_id: uuidv4(),
@@ -14,12 +15,41 @@ const postTweet = (req, res) => {
     likes_count: 0,
     retweet_count: 0
   }
- 
+  
   let sql = 'INSERT INTO TWEETS SET ?'
   db.query(sql, data, (err, result) => {
     if(err) throw err;
-    res.send('Tweet posted')
+    res.send(data)
   })
 }
 
-module.exports = { postTweet }
+const ownTweets = async (req, res) => {
+  let user_id = req.body.user_id;
+  let user_name = req.body.user_name;
+
+  function fetchUserId() {
+    let sql = "SELECT * FROM USERS WHERE username = ?";
+    db.query(sql, [user_name], (err, result) => {
+      if(err) throw err;
+      user_id = result[0].user_id
+      fetchTweets();
+    })
+  }
+  
+  function fetchTweets() {
+    let sql = 'SELECT * FROM TWEETS WHERE user_id = ?';
+    db.query(sql, [user_id], (err, result) => {
+      if(err) throw err;
+      res.send(result)
+    })
+  }
+  if(user_id === "" || user_id === undefined || user_id === null) {
+    fetchUserId();
+  } else {
+    fetchTweets();
+  }
+  
+  
+}
+
+module.exports = { postTweet, ownTweets }

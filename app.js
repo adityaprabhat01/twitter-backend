@@ -1,10 +1,12 @@
 const express = require("express");
 const mysql = require('mysql');
 const routes = require('./routes')
+const cors = require('cors')
 require('dotenv').config();
 
 const app = express()
 app.use(express.json());
+app.use(cors());
 
 var db;
 function connectDatabase() {
