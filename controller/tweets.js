@@ -23,6 +23,7 @@ const postTweet = (req, res) => {
   })
 }
 
+// tweets on profile page
 const ownTweets = async (req, res) => {
   let user_id = req.body.user_id;
   let user_name = req.body.user_name;
@@ -43,13 +44,27 @@ const ownTweets = async (req, res) => {
       res.send(result)
     })
   }
+
   if(user_id === "" || user_id === undefined || user_id === null) {
     fetchUserId();
   } else {
     fetchTweets();
   }
-  
-  
 }
 
-module.exports = { postTweet, ownTweets }
+// tweets on homepage
+const homeTweets = (req, res) => {
+  let user_id = req.body.user_id;
+  let user_name = req.body.user_name;
+  
+  function fetchTweets() {
+    let sql = "select * from FOLLOWING INNER JOIN TWEETS ON FOLLOWING_ID = USER_ID INNER JOIN USERS ON FOLLOWING_ID = USERS.user_id WHERE follower_id = ?";
+    db.query(sql, [user_id, user_id], (err, result) => {
+      if(err) throw err;
+      res.send(result)
+    })
+  }
+  fetchTweets()
+}
+
+module.exports = { postTweet, ownTweets, homeTweets }
