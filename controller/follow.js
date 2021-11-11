@@ -25,9 +25,18 @@ const unfollow = (req, res) => {
   let sql = "DELETE FROM FOLLOWING WHERE follower_id = ? and following_id = ?"
   db.query(sql, [follower_id, following_id], (err, result) => {
     if(err) throw err;
-    console.log(result)
     res.send(data)
   })
 }
 
-module.exports = { follow, unfollow }
+// check for follow
+const checkFollow = (req, res) => {
+  const { follower_id, following_id } = req.body;
+  let sql = "SELECT * FROM FOLLOWING WHERE follower_id = ? and following_id = ?"
+  db.query(sql, [follower_id, following_id], (err, result) => {
+    if(err) throw err;
+    res.send(result)
+  })
+}
+
+module.exports = { follow, unfollow, checkFollow }
