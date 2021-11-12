@@ -9,12 +9,15 @@ const postTweet = (req, res) => {
     tweet_id: uuidv4(),
     tweet: req.body.tweet,
     user_id: req.body.user_id,
+    author_id: req.body.author_id,
     self_liked: false,
     self_retweeted: false,
     posted_on: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'),
     likes_count: 0,
     retweet_count: 0
   }
+
+  console.log(data)
   
   let sql = 'INSERT INTO TWEETS SET ?'
   db.query(sql, data, (err, result) => {
@@ -67,4 +70,13 @@ const homeTweets = (req, res) => {
   fetchTweets()
 }
 
-module.exports = { postTweet, ownTweets, homeTweets }
+const ownRetweetedTweets = (req, res) => {
+  const { user_id } = req.body;
+  let sql = "select * from RETWEETS INNER JOIN USERS ON RETWEETS.user_id = USERS.user_id INNER JOIN TWEETS ON TWEETS.tweet_id = RETWEETS.tweet_id where RETWEETS.user_id = ? and RETWEETS.author_id <> ?"
+  db.query(sql, [user_id, user_id], (err, result) => {
+    if(err) throw err;
+    res.send(result)
+  }) 
+} 
+
+module.exports = { postTweet, ownTweets, homeTweets, ownRetweetedTweets }
