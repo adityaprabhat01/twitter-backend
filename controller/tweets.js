@@ -41,8 +41,8 @@ const ownTweets = async (req, res) => {
   }
   
   function fetchTweets() {
-    let sql = 'SELECT * FROM TWEETS WHERE user_id = ?';
-    db.query(sql, [user_id], (err, result) => {
+    let sql = 'SELECT * FROM TWEETS INNER JOIN USERS WHERE USERS.user_id = ? and TWEETS.user_id = ?';
+    db.query(sql, [user_id, user_id], (err, result) => {
       if(err) throw err;
       res.send(result)
     })
@@ -72,7 +72,7 @@ const homeTweets = (req, res) => {
 
 const ownRetweetedTweets = (req, res) => {
   const { user_id } = req.body;
-  let sql = "select * from RETWEETS INNER JOIN USERS ON RETWEETS.user_id = USERS.user_id INNER JOIN TWEETS ON TWEETS.tweet_id = RETWEETS.tweet_id where RETWEETS.user_id = ? and RETWEETS.author_id <> ?"
+  let sql = "select * from RETWEETS INNER JOIN USERS ON RETWEETS.author_id = USERS.user_id INNER JOIN TWEETS ON TWEETS.tweet_id = RETWEETS.tweet_id where RETWEETS.user_id = ? and RETWEETS.author_id <> ?"
   db.query(sql, [user_id, user_id], (err, result) => {
     if(err) throw err;
     res.send(result)

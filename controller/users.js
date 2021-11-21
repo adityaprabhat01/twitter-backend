@@ -50,4 +50,26 @@ const search = (req, res) => {
   })
 }
 
-module.exports = { signUp, signIn, search };
+// check user existence
+const checkExistence = (req, res) => {
+  const user_name = req.params.user_name;
+  console.log(user_name)
+  let sql = 'SELECT * FROM USERS WHERE username = ?';
+  db.query(sql, [user_name], (err, result) => {
+    if(err) throw err;
+    if(result.length === 0) {
+      const obj = {
+        found: false
+      }
+      res.send(obj);
+    }
+    else {
+      const obj = {
+        found: true
+      }
+      res.send(obj);
+    }
+  })
+}
+
+module.exports = { signUp, signIn, search, checkExistence };

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 const { postTweet, ownTweets, homeTweets, ownRetweetedTweets } = require('./controller/tweets');
-const { signIn, signUp, search } = require('./controller/users');
+const { signIn, signUp, search, checkExistence } = require('./controller/users');
 const { follow, unfollow, checkFollow } = require('./controller/follow');
 const { like, allLiked, unlike } = require('./controller/likes');
 const { retweet, unretweet, allRetweeted } = require('./controller/retweet');
@@ -17,6 +17,7 @@ router.post('/ownRetweetedTweets', ownRetweetedTweets);
 router.post('/signUp', signUp);
 router.post('/signIn', signIn);
 router.post('/search', search);
+router.get('/checkExistence/:user_name', checkExistence);
 
 // follow
 router.post('/follow', follow);
