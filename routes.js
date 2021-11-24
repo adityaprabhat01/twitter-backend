@@ -6,6 +6,8 @@ const { signIn, signUp, search, checkExistence } = require('./controller/users')
 const { follow, unfollow, checkFollow } = require('./controller/follow');
 const { like, allLiked, unlike } = require('./controller/likes');
 const { retweet, unretweet, allRetweeted } = require('./controller/retweet');
+const { postComment } = require('./controller/comments');
+const { fetchThread } = require('./controller/thread');
 
 // tweets
 router.post('/postTweet', postTweet);
@@ -33,5 +35,11 @@ router.post('/unlike', unlike);
 router.post('/retweet', retweet);
 router.post('/unretweet', unretweet);
 router.post('/allRetweeted', allRetweeted);
+
+// comments
+router.post('/postComment', postComment);
+
+// thread
+router.get('/fetchThread/:tweet_id', fetchThread);
 
 module.exports = router

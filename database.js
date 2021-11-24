@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const mongoose = require('mongoose')
 require('dotenv').config();
 
 var db;
@@ -21,5 +22,7 @@ function connectDatabase() {
   
   return db;
 }
+
+
 
 module.exports = connectDatabase();

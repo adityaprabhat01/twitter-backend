@@ -1,10 +1,12 @@
 const { v4: uuidv4 } = require('uuid');
 var mysql = require('mysql');
+const mongoose = require('mongoose')
 var db = require('../database')
 var moment = require('moment');
+const Comments = require('../model/comment')
 
 // post
-const postTweet = (req, res) => {
+const postTweet = async (req, res) => {
   let data = {
     tweet_id: uuidv4(),
     tweet: req.body.tweet,
@@ -17,8 +19,6 @@ const postTweet = (req, res) => {
     retweet_count: 0
   }
 
-  console.log(data)
-  
   let sql = 'INSERT INTO TWEETS SET ?'
   db.query(sql, data, (err, result) => {
     if(err) throw err;

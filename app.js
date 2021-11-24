@@ -1,10 +1,12 @@
 const express = require("express");
+const mongoose = require('mongoose')
 const mysql = require('mysql');
 const routes = require('./routes')
 const cors = require('cors')
 require('dotenv').config();
 
 const app = express()
+const app_m = express()
 app.use(express.json());
 app.use(cors());
 
@@ -29,6 +31,15 @@ function connectDatabase() {
   
   return db;
 }
+
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((res) => {
+    app.listen(process.env.DB_PORT_MONGODB);
+    console.log("Connected to MongoDB, server up on port " + process.env.DB_PORT_MONGODB);
+  })
+  .catch((err) => {
+    console.log(err);
+});
 
 app.use('', routes);
 app.listen(process.env.SERVER_PORT);

@@ -53,7 +53,6 @@ const search = (req, res) => {
 // check user existence
 const checkExistence = (req, res) => {
   const user_name = req.params.user_name;
-  console.log(user_name)
   let sql = 'SELECT * FROM USERS WHERE username = ?';
   db.query(sql, [user_name], (err, result) => {
     if(err) throw err;
