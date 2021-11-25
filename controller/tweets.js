@@ -22,6 +22,8 @@ const postTweet = async (req, res) => {
   let sql = 'INSERT INTO TWEETS SET ?'
   db.query(sql, data, (err, result) => {
     if(err) throw err;
+    data['name'] = req.body.name;
+    data['user_name'] = req.body.user_name;
     res.send(data)
   })
 }
