@@ -3,7 +3,7 @@ var mysql = require('mysql');
 const mongoose = require('mongoose')
 var db = require('../database')
 var moment = require('moment');
-const Comments = require('../model/comment')
+const Comment = require('../model/comment')
 
 // post
 const postTweet = async (req, res) => {
@@ -72,6 +72,7 @@ const homeTweets = (req, res) => {
   fetchTweets()
 }
 
+// tweets a user retweeted
 const ownRetweetedTweets = (req, res) => {
   const { user_id } = req.body;
   let sql = "select * from RETWEETS INNER JOIN USERS ON RETWEETS.author_id = USERS.user_id INNER JOIN TWEETS ON TWEETS.tweet_id = RETWEETS.tweet_id where RETWEETS.user_id = ? and RETWEETS.author_id <> ?"
@@ -79,6 +80,56 @@ const ownRetweetedTweets = (req, res) => {
     if(err) throw err;
     res.send(result)
   }) 
-} 
+}
 
-module.exports = { postTweet, ownTweets, homeTweets, ownRetweetedTweets }
+// delete tweet
+const deleteTweet = (req, res) => {
+  const { tweet_id, user_id, profile_id } = req.body
+  let data = {
+    tweet_id,
+    user_id,
+    profile_id
+  }
+  let sql = "delete from TWEETS where tweet_id = ?"
+  if(user_id !== profile_id) {
+    let obj = {
+      err: 'Cannot delete tweet'
+    }
+    res.send(obj)
+  } else {
+    db.query(sql, [tweet_id], (err, result) => {
+      if(err) throw err;
+      res.send(data)
+    })
+  }
+}
+
+const likeCount = (req, res) => {
+  const tweet_id = req.params.tweet_id
+  let sql = "select count(*) from LIKES WHERE LIKES.tweet_id = ?"
+  db.query(sql, [tweet_id], (err, result) => {
+    let obj = {
+      count: result[0]['count(*)']
+    }
+    res.send(obj)
+  })
+}
+
+const commentCount = async (req, res) => {
+  const tweet_id = req.params.tweet_id
+  await Comment.find({
+    tweet_id
+  })
+  .then(data => {
+    let obj = {
+      count: data.length
+    }
+    console.log(obj)
+    res.send(obj)
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
+
+module.exports = { postTweet, ownTweets, homeTweets, ownRetweetedTweets, deleteTweet, likeCount, commentCount }
