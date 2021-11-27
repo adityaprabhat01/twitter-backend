@@ -6,7 +6,7 @@ const postComment = async (req, res) => {
   const comment = new Comments({
     tweet_id: req.body.tweet_id,
     author_id: req.body.author_id,
-    author_name: req.body.authorß_name,
+    author_name: req.body.author_name,
     author_username: req.body.author_username,
     comment_text: req.body.comment_text,
     reply: []
