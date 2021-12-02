@@ -3,7 +3,7 @@ const router = express.Router()
 
 const { postTweet, ownTweets, homeTweets, ownRetweetedTweets, deleteTweet, likeCount, commentCount } = require('./controller/tweets');
 const { signIn, signUp, search, checkExistence } = require('./controller/users');
-const { follow, unfollow, checkFollow } = require('./controller/follow');
+const { follow, unfollow, checkFollow, followerList, followingList } = require('./controller/follow');
 const { like, allLiked, unlike } = require('./controller/likes');
 const { retweet, unretweet, allRetweeted } = require('./controller/retweet');
 const { postComment } = require('./controller/comments');
@@ -28,6 +28,8 @@ router.get('/checkExistence/:user_name', checkExistence);
 router.post('/follow', follow);
 router.post('/unfollow', unfollow);
 router.post('/checkFollow', checkFollow);
+router.get('/followerList/:following_id', followerList);
+router.get('/followingList/:follower_id', followingList);
 
 // likes
 router.post('/like', like);

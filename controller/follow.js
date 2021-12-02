@@ -39,4 +39,24 @@ const checkFollow = (req, res) => {
   })
 }
 
-module.exports = { follow, unfollow, checkFollow }
+// following list
+const followingList = (req, res) => {
+  const { follower_id } = req.params;
+  let sql = "select * from FOLLOWING INNER JOIN USERS ON following_id = user_id WHERE follower_id = ?";
+  db.query(sql, [follower_id], (err, result) => {
+    if(err) throw err;
+    res.send(result)
+  })
+}
+
+// follower list
+const followerList = (req, res) => {
+  const { following_id } = req.params;
+  let sql = "select * from FOLLOWING INNER JOIN USERS ON follower_id = user_id WHERE following_id = ?";
+  db.query(sql, [following_id], (err, result) => {
+    if(err) throw err;
+    res.send(result)
+  })
+}
+
+module.exports = { follow, unfollow, checkFollow, followingList, followerList }

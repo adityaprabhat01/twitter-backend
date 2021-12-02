@@ -124,7 +124,6 @@ const commentCount = async (req, res) => {
     let obj = {
       count: data.length
     }
-    console.log(obj)
     res.send(obj)
   })
   .catch(err => {

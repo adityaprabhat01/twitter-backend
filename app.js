@@ -32,6 +32,7 @@ function connectDatabase() {
   return db;
 }
 
+
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((res) => {
     app.listen(process.env.DB_PORT_MONGODB);
