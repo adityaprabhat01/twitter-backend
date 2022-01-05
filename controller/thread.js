@@ -10,16 +10,7 @@ const fetchThread = (req, res) => {
 
   db.query(sql, [tweet_id], async (err, result) => {
     if(err) throw err;
-    await Comment.find({
-      tweet_id
-    })
-    .then(data => {
-      result.push(data)
-      res.send(result)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    res.send(result)
   })
 }
 

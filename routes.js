@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router()
 
-const { postTweet, ownTweets, homeTweets, ownRetweetedTweets, deleteTweet, likeCount, commentCount } = require('./controller/tweets');
+const { postTweet, ownTweets, homeTweets, ownRetweetedTweets, deleteTweet, likeCount } = require('./controller/tweets');
 const { signIn, signUp, search, checkExistence } = require('./controller/users');
 const { follow, unfollow, checkFollow, followerList, followingList } = require('./controller/follow');
-const { like, allLiked, unlike } = require('./controller/likes');
+const { like, allLiked, unlike, likedTweetsWithDetails } = require('./controller/likes');
 const { retweet, unretweet, allRetweeted } = require('./controller/retweet');
-const { postComment } = require('./controller/comments');
+const { plusComment, minusComment, commentCount } = require('./controller/comments');
 const { fetchThread } = require('./controller/thread');
 
 // tweets
@@ -16,7 +16,6 @@ router.post('/homeTweets', homeTweets);
 router.post('/ownRetweetedTweets', ownRetweetedTweets);
 router.post('/deleteTweet', deleteTweet);
 router.get('/likeCount/:tweet_id', likeCount);
-router.get('/commentCount/:tweet_id', commentCount);
 
 // users
 router.post('/signUp', signUp);
@@ -35,6 +34,7 @@ router.get('/followingList/:follower_id', followingList);
 router.post('/like', like);
 router.post('/allLiked', allLiked);
 router.post('/unlike', unlike);
+router.get('/likedTweetsWithDetails/:user_id', likedTweetsWithDetails);
 
 // retweet
 router.post('/retweet', retweet);
@@ -42,7 +42,9 @@ router.post('/unretweet', unretweet);
 router.post('/allRetweeted', allRetweeted);
 
 // comments
-router.post('/postComment', postComment);
+router.get('/plusComment/:tweet_id', plusComment);
+router.get('/minusComment/:tweet_id', minusComment);
+router.get('/commentCount/:tweet_id', commentCount)
 
 // thread
 router.get('/fetchThread/:tweet_id', fetchThread);

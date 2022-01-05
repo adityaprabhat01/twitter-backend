@@ -43,4 +43,14 @@ const allLiked = (req, res) => {
   })
 }
 
-module.exports = { like, allLiked, unlike }
+// liked tweets + user details
+const likedTweetsWithDetails = (req, res) => {
+  const { user_id } = req.params;
+  let sql = "select * from LIKES INNER JOIN TWEETS ON LIKES.tweet_id = TWEETS.tweet_id INNER JOIN USERS ON LIKES.author_id = USERS.user_id where LIKES.user_id = ?"
+  db.query(sql, user_id, (err, result) => {
+    if(err) throw err;
+    res.send(result)
+  })
+}
+ 
+module.exports = { like, allLiked, unlike, likedTweetsWithDetails }

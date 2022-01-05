@@ -16,7 +16,8 @@ const postTweet = async (req, res) => {
     self_retweeted: false,
     posted_on: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'),
     likes_count: 0,
-    retweet_count: 0
+    retweet_count: 0,
+    comment_count: 0
   }
 
   let sql = 'INSERT INTO TWEETS SET ?'
@@ -115,20 +116,5 @@ const likeCount = (req, res) => {
   })
 }
 
-const commentCount = async (req, res) => {
-  const tweet_id = req.params.tweet_id
-  await Comment.find({
-    tweet_id
-  })
-  .then(data => {
-    let obj = {
-      count: data.length
-    }
-    res.send(obj)
-  })
-  .catch(err => {
-    console.log(err)
-  })
-}
 
-module.exports = { postTweet, ownTweets, homeTweets, ownRetweetedTweets, deleteTweet, likeCount, commentCount }
+module.exports = { postTweet, ownTweets, homeTweets, ownRetweetedTweets, deleteTweet, likeCount }

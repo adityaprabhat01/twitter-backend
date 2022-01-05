@@ -18,16 +18,13 @@ const commentSchema = new Schema({
   comment_text: {
     type: String
   },
-  reply: [{
+  replies: [{
     reply_id: {
       type: mongoose.Schema.Types.ObjectId
     },
     reply: {
       type: String
     },
-    replies: [{
-      type: Array
-    }],
     author_id: {
       type: String
     },
@@ -36,7 +33,10 @@ const commentSchema = new Schema({
     },
     author_username: {
       type: String
-    }
+    },
+    replies: [{
+      type: Array
+    }]
   }]
 })
 
