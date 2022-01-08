@@ -61,6 +61,8 @@ const signIn = (req, res) => {
           const token = createToken(result[0].user_id)
           res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000, Secure: true, SameSite: 'None' })
           res.cookie('user_id', result[0].user_id, { maxAge: maxAge * 1000, Secure: true, SameSite: 'None' })
+          res.cookie('user_name', result[0].username, { maxAge: maxAge * 1000, Secure: true, SameSite: 'None' })
+          res.cookie('name', result[0].name, { maxAge: maxAge * 1000, Secure: true, SameSite: 'None' })
           res.status(200).send(response)
         } else {
           throw Error('incorrect password')

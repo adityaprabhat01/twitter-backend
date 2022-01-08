@@ -10,10 +10,14 @@ const like = (req, res) => {
     tweet_id,
     status: true
   }
-  let sql = "INSERT INTO LIKES SET ?"
-  db.query(sql, data, (err, result) => {
+  let sql1 = "INSERT INTO LIKES SET ?"
+  let sql2 = "UPDATE TWEETS SET likes_count = likes_count + 1 where tweet_id = ?"
+  db.query(sql1, data, (err, result1) => {
     if(err) throw err;
-    res.send(data)
+    db.query(sql2, [tweet_id], (err, result2) => {
+      if(err) throw err;
+      res.send(data);
+    })
   })
 }
 
@@ -26,10 +30,14 @@ const unlike = (req, res) => {
     tweet_id,
     status: false
   }
-  let sql = "DELETE FROM LIKES WHERE user_id = ? AND author_id = ? AND tweet_id = ?"
-  db.query(sql, [user_id, author_id, tweet_id], (err, result) => {
+  let sql1 = "DELETE FROM LIKES WHERE user_id = ? AND author_id = ? AND tweet_id = ?"
+  let sql2 = "UPDATE TWEETS SET likes_count = likes_count - 1 where tweet_id = ?"
+  db.query(sql1, [user_id, author_id, tweet_id], (err, result1) => {
     if(err) throw err;
-    res.send(data)
+    db.query(sql2, [tweet_id], (err, result2) => {
+      if(err) throw err;
+      res.send(data);
+    })
   })
 }
 
