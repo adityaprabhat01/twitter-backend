@@ -10,6 +10,7 @@ const fetchThread = (req, res) => {
 
   db.query(sql, [tweet_id], async (err, result) => {
     if(err) throw err;
+    result[0]['comments'] = []
     res.send(result)
   })
 }

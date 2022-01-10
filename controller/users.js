@@ -79,6 +79,9 @@ const signIn = (req, res) => {
 // Log Out
 const logOut = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 })
+  res.cookie('name', '', { maxAge: 1 })
+  res.cookie('user_name', '', { maxAge: 1 })
+  res.cookie('user_id', '', { maxAge: 1 })
   const obj = {
     redirect: true
   }
